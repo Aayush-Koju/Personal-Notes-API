@@ -37,8 +37,32 @@ app.post("/notes", (req, res) => {
     return res.status(400).json({ error: "Title and content are required" });
   }
 
-  fs.writeFile(notesFilePath, "utf8", (err, data) => {
-    if (err) return res.status(500).json({ error: "Failed to create note" });
+  const newNote = { id: Date.now().toString(), title, content };
+
+  fs.readFile(notesFilePath, "utf8", (err, data) => {
+    if (err) return res.status(500).json({ error: "failed to read notes" });
+
+    let notes = [];
+
+    if (data) {
+      try {
+        notes = JSON.parse(data);
+      } catch (err) {
+        return res.status(500).json({ error: "Failed to parse notes data" });
+      }
+    }
+
+    notes.push(newNote);
+    fs.writeFile(
+      notesFilePath,
+      JSON.stringify(notes, null, 2),
+      "utf8",
+      (err) => {
+        if (err)
+          return res.status(500).json({ error: "Failed to create note" });
+        res.status(201).json(notes);
+      }
+    );
   });
 });
 

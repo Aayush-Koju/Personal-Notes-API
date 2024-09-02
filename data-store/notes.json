@@ -1,7 +1,17 @@
 [
-    {
-        "id":1,
-        "title":"new notes",
-        "content":"for testing purpose"
-    }
+  {
+    "id": 1,
+    "title": "new notes",
+    "content": "for testing purpose"
+  },
+  {
+    "id": "1725275970756",
+    "title": "new note",
+    "content": "ma@gmail.com"
+  },
+  {
+    "id": "1725276056228",
+    "title": "notes3",
+    "content": "note number 3"
+  }
 ]
