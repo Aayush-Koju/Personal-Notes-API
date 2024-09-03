@@ -95,6 +95,27 @@ app.put("/notes/:id", (req, res) => {
   });
 });
 
+//delete data
+app.delete("/notes/:id", (req, res) => {
+  const noteId = parseInt(req.params.id);
+
+  fs.readFile(notesFilePath, "utf8", (err, data) => {
+    if (err) return res.status(500).json({ error: "failed to read notes" });
+
+    const notes = JSON.parse(data);
+    const newNotes = notes.filter((n) => n.id !== noteId);
+
+    if (notes.length === newNotes.length) {
+      return res.status(404).json({ error: "Failed to read notes" });
+    }
+
+    fs.writeFile(notesFilePath, JSON.stringify(newNotes, null, 2), (err) => {
+      if (err) return res.status(500).json({ error: "Failed to delete note" });
+      res.status(204).end();
+    });
+  });
+});
+
 const PORT = process.env.PORT || 3000;
 
 app.listen(PORT, () => {
